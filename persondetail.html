@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Movie</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script>
+    $(function(){
+		var urlParams = new URLSearchParams(window.location.search);
+        var id = urlParams.get('id');
+		var _apiKey = "597b92f2ffc900ed227ec2bc062cba5b";
+
+		var service_point="https://api.themoviedb.org/3/credit/" + id + "?api_key=" + _apiKey;
+        $.getJSON(service_point, function (json)
+        {
+			var cover="https://www.themoviedb.org/t/p/w300_and_h450_bestv2/" + json.person.profile_path;
+			
+			$("#cover").attr("src",cover);
+			$("#personName").text(json.person.name);
+			$("#personGender").text(json.person.gender == 2? "Male" : "Female");
+			$("#personJob").html(json.job);
+
+			// var resultHTML="";
+			// for (i in json.genres)
+            // {
+			// 	resultHTML+=json.genres[i].name+"; ";
+            // }
+
+            // $("#category").html(resultHTML);
+
+		}); 
+    });
+</script>
+</head>
+<style>
+	.barclass {
+		background-color: rgb(0, 153, 255);
+		height: 30px;
+		line-height: 30px;
+		vertical-align: middle;
+		color: black;
+		font-weight: bold;
+	}
+</style>
+<body>
+	<div id="navBar" class="barclass" style="font-size:bold;">
+		<a href="index.html">Search</a> | <a href="discover.html">Discover</a> | <a href="popmovies.html">Popular Movies</a> | 
+		</div>
+	
+<h2 id="personName"></h2>
+<p>Gender: <span id="personGender"></span></p>
+<img id="cover" height=200 />
+<p>Job: <span id="personJob"></span></p>
+
+
+</body>
+</html>

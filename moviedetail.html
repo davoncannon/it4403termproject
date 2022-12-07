@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>Movie</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script>
+    $(function(){
+		var urlParams = new URLSearchParams(window.location.search);
+        var id = urlParams.get('id');
+		var _apiKey = "597b92f2ffc900ed227ec2bc062cba5b";
+
+		var service_point="https://api.themoviedb.org/3/movie/" + id + "?api_key=" + _apiKey + "&append_to_response=credits";
+        $.getJSON(service_point, function (json)
+        {
+			var cover="https://image.tmdb.org/t/p/w94_and_h141_bestv2/" + json.poster_path;
+			
+			$("#cover").attr("src",cover);
+			$("#movieTitle").text(json.original_title);
+			$("#releaseDate").text(json.release_date);
+			$("#movieDescription").html(json.overview);
+			
+			var resultHTML="";
+			for (i in json.genres)
+            {
+				resultHTML+=json.genres[i].name+"; ";
+            }
+
+            $("#category").html(resultHTML);
+
+			resultHTML="";
+			for (i in json.credits.cast)
+            {
+				resultHTML+= "<a href=\"persondetail.html?id=" + json.credits.cast[i].credit_id + "\">" + json.credits.cast[i].name + "</a>; ";
+            }
+
+			$("#cast").html(resultHTML);
+			
+		}); 
+    });
+</script>
+</head>
+<style>
+	.barclass {
+		background-color: rgb(0, 153, 255);
+		height: 30px;
+		line-height: 30px;
+		vertical-align: middle;
+		color: black;
+		font-weight: bold;
+	}
+</style>
+<body>
+	<div id="navBar" class="barclass" style="font-size:bold;">
+		<a href="index.html">Search</a> | <a href="discover.html">Discover</a> | <a href="popmovies.html">Popular Movies</a> | 
+		</div>
+	
+<h2 id="movieTitle"></h2>
+<p>Released: <span id="releaseDate"></span></p>
+<img id="cover" height=200 />
+<p>Description: <span id="movieDescription"></span></p>
+<p>Cast:</p>
+<div id="cast"></div>
+<p>Categories:</p>
+<div id="category"></div>
+
+</body>
+</html>
